@@ -2,12 +2,21 @@
 
 namespace Services
 {
-    public class CitiesService : ICitiesService
+    public class CitiesService : ICitiesService, IDisposable
     {
         private List<string> _cities = new List<string>();
+        private Guid _serviceInstanceId;
+        public Guid ServiceInstanceId { 
+            get 
+            {
+                return _serviceInstanceId;
+            } 
+        }
+
         // from db
         public CitiesService()
         {
+            _serviceInstanceId = Guid.NewGuid();
             _cities = new List<string>()
             {
                 "London",
@@ -16,6 +25,7 @@ namespace Services
                 "Tokyo",
                 "Rome"
             };
+            // add logic open db connection
         }
 
         // fetching database
@@ -24,5 +34,9 @@ namespace Services
             return _cities;
         }
 
+        public void Dispose()
+        {
+            //add logic to close db connection
+        }
     }
 }
